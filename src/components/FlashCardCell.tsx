@@ -1,0 +1,34 @@
+import React, { useEffect } from "react";
+import { FlashCardCellProps } from "../utils/types";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/core";
+import { screenNames } from "../utils/screenNames";
+
+export default function FlashCardCell({
+  flashCardTitle,
+  flashCard_id,
+}: FlashCardCellProps) {
+  const navigation = useNavigation<any>();
+  const navigateToFlashCard = () => {
+    navigation.navigate(screenNames.flashCard.name, { flashCard_id, flashCardTitle });
+  };
+
+  return (
+    <TouchableOpacity style={styles.cell} onPress={navigateToFlashCard}>
+      <Text>this is a flashcard cell</Text>
+    </TouchableOpacity>
+  );
+}
+
+const styles = StyleSheet.create({
+  cell: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingRight: 10,
+    paddingLeft: 10,
+    backgroundColor: "#FCC300",
+    marginTop: 30,
+    width: "90%",
+    borderRadius: 5,
+  },
+});
