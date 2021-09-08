@@ -15,7 +15,7 @@ export default function FlashCardCell({
 
   return (
     <TouchableOpacity style={styles.cell} onPress={navigateToFlashCard}>
-      <Text>this is a flashcard cell</Text>
+      <Text>{flashCardTitle}</Text>
     </TouchableOpacity>
   );
 }
