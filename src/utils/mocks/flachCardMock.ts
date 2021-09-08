@@ -42,12 +42,12 @@ export const flashCardMock =
     ],
     ressource: [
         {
-            name: "interesting 1-1",
-            url: "url 1 - 1"
+            name: "our firend google",
+            url: "https://www.google.com/"
         },
         {
-            name: "interesting 1-2",
-            url: "url 1 - 2"
+            name: "this is our best friend stackkk overflow aiehgaeh gàaehg à_aehgà_ aheàghaeàghaeà_ghaeàghaàe_gh aegà_aehg à_aehgà_a egà_ahe à_ha eàgheaà_g àae_h gàae gà_aeg",
+            url: "https://stackoverflow.com/"
         }
     ]
 }

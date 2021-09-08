@@ -7,6 +7,7 @@ import AppLayout from "../components/Layout";
 import { flashCardMock } from "../utils/mocks/flachCardMock";
 import SubTitleSection from "../components/SubTitleSection";
 import { ScrollView } from "react-native-gesture-handler";
+import RessourcesSection from "../components/ResourcesSection";
 //========================================================
 export default function FlashCard(): JSX.Element {
   const [flashCard, setFlashCard] = useState<iFlashCard>();
@@ -43,6 +44,8 @@ export default function FlashCard(): JSX.Element {
               </View>
             );
           })}
+
+        <RessourcesSection ressources={flashCard?.ressource!}/>
         </View>
       </ScrollView>
     </AppLayout>

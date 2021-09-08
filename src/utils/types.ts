@@ -15,7 +15,7 @@ export type Subtitle = {
     paragraph : Paragraph[],
 }
 
-type Ressource  = {
+export type Ressource  = {
     name : string,
     url : string,
 }
@@ -33,10 +33,14 @@ export type RootStackParamList  = {
 }
 //=============================================================
 export interface iSubTitleSectionProps {
-    title : string,
+    title : string
     paragraphs : Paragraph[]
 }
 //=============================================================
+
+export interface iRessourceSectionProps {
+    ressources : Ressource[];
+}
 
 
 

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { iSubTitleSectionProps, Paragraph } from "../utils/types";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 
 export default function SubTitleSection({
   title,
