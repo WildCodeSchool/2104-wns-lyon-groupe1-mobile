@@ -4,12 +4,18 @@ import { View, StyleSheet, TextInput, Image } from "react-native";
 import FlashCardCell from "../components/FlashCardCell";
 import { ScrollView } from "react-native-gesture-handler";
 import AppLayout from "../components/Layout";
+
+import { listFlashCardsMock } from "../utils/mocks/listFlashCardsMock";
 //=============================================================================
+
 
 export default function ListFlashCards(): JSX.Element {
   const [filterText, setFilterText] = useState("");
-  //TODO implement debouncer here
-  useEffect(() => {});
+  const [flashCards, setFlashCards] = useState<any>([{}]);
+  //TODO implement debouncer
+  useEffect(() => {
+    setFlashCards(listFlashCardsMock);
+  }, []);
 
   return (
     <AppLayout>
@@ -24,18 +30,16 @@ export default function ListFlashCards(): JSX.Element {
           />
           <Image source={require("../../assets/filterLoop.png")} />
         </View>
-        <FlashCardCell flashCardTitle={"title 1"} flashCard_id={"id 1"} />
-        <FlashCardCell flashCardTitle={"title 2"} flashCard_id={"id 2"} />
-        <FlashCardCell flashCardTitle={"title 3"} flashCard_id={"id 3"} />
-        <FlashCardCell flashCardTitle={"title 4"} flashCard_id={"id 4"} />
-        <FlashCardCell flashCardTitle={"title 5"} flashCard_id={"id 5"} />
-        <FlashCardCell flashCardTitle={"title 6"} flashCard_id={"id 6"} />
-        <FlashCardCell flashCardTitle={"title 7"} flashCard_id={"id 7"} />
-        <FlashCardCell flashCardTitle={"title 8"} flashCard_id={"id 8"} />
-        <FlashCardCell flashCardTitle={"title 9"} flashCard_id={"id 9"} />
-        <FlashCardCell flashCardTitle={"title 10"} flashCard_id={"id 10"} />
-        <FlashCardCell flashCardTitle={"title 11"} flashCard_id={"id 11"} />
-        <FlashCardCell flashCardTitle={"title 12"} flashCard_id={"id 12"} />
+
+        {flashCards.map((flashCard: any, key: number) => {
+          return (
+            <FlashCardCell
+              key={key}
+              flashCardTitle={flashCard.title}
+              flashCard_id={flashCard._id}
+            />
+          );
+        })}
       </ScrollView>
     </AppLayout>
   );
