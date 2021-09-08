@@ -30,7 +30,10 @@ export default function App() {
         <Stack.Screen
           name={screenNames.flashCard.name}
           component={FlashCard}
-          options={{title : screenNames.flashCard.title}}
+          options={{title : screenNames.flashCard.title,
+             headerStyle : {
+               backgroundColor : '#FCC300'
+             }}}
         />
       </Stack.Navigator>
     </NavigationContainer>
