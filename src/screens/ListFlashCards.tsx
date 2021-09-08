@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { View, StyleSheet, TextInput, Image } from "react-native";
-
+import { debounce, filter } from "lodash";
 import FlashCardCell from "../components/FlashCardCell";
 import { ScrollView } from "react-native-gesture-handler";
 import AppLayout from "../components/Layout";
@@ -8,21 +8,49 @@ import AppLayout from "../components/Layout";
 import { listFlashCardsMock } from "../utils/mocks/listFlashCardsMock";
 //=============================================================================
 
-
 export default function ListFlashCards(): JSX.Element {
   const [filterText, setFilterText] = useState("");
+  const [filterTextDelayed, setFilterTextDelayed] = useState("");
   const [flashCards, setFlashCards] = useState<any>([{}]);
-  //TODO implement debouncer
-  useEffect(() => {
-    setFlashCards(listFlashCardsMock);
-  }, []);
+     useEffect(() => {
+    if(filterTextDelayed === ""){
+      setFlashCards(listFlashCardsMock);
+    }
+    if(filterTextDelayed !== "") {
+      fetchFlashCards(listFlashCardsMock, filterTextDelayed)
+    }
+  }, [filterTextDelayed]);
+
+  //============================================================================
+  const fetchFlashCards = (listFlashCards : any, filterTextDelayed : string) => {
+    let listFilteredFlashCards = [];
+    for(let i=0; i<listFlashCards.length;i++){
+      for(let j=0; j<listFlashCards[i].tag.length; j++){
+        if(listFlashCards[i].tag[j] === filterTextDelayed){
+          listFilteredFlashCards.push(listFlashCards[i]);
+        }
+      }
+    }
+    setFlashCards(listFilteredFlashCards);
+  }
+  //============================================================================
+
+  const debouncedFilter = useCallback(
+    debounce((value: string) => setFilterTextDelayed(value), 500),
+    []
+  );
+  const handleFilterTextChange = (value: string) => {
+    setFilterText(value);
+    debouncedFilter(value);
+  };
+  //===============================================================================
 
   return (
     <AppLayout>
       <ScrollView contentContainerStyle={styles.cellsContainer}>
         <View style={styles.filterContainer}>
           <TextInput
-            onChangeText={setFilterText}
+            onChangeText={(value) => handleFilterTextChange(value)}
             value={filterText}
             placeholder={"Nom de la fiche"}
             textContentType={"emailAddress"}
