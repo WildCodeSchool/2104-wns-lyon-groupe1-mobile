@@ -1,23 +1,24 @@
 import React from "react";
-import {View ,StyleSheet} from "react-native";
-
+import { View, StyleSheet } from "react-native";
 
 interface IChildren {
-    children : any
+  children: any;
 }
 
-
-export default function AppLayout ({children} : IChildren){
-    return <View style={styles.container}>{children}</View>
+export default function AppLayout({ children }: IChildren) {
+  return (
+    <View style={styles.container}>
+      <View style={styles.contentWrapper}>{children}</View>
+    </View>
+  );
 }
-
 
 const styles = StyleSheet.create({
-    container : {
-        justifyContent : "center",
-        paddingLeft : 8,
-        paddingHorizontal: 8,
-        paddingTop : 10
-    }
+  container: {
+    justifyContent: "center",
+    paddingTop: 10,
+  },
+  contentWrapper: {
+    paddingHorizontal: 8,
+  },
 });
-
