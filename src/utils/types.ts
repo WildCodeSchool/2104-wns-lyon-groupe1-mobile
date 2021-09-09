@@ -42,6 +42,12 @@ export interface iRessourceSectionProps {
     ressources : Ressource[];
 }
 
+//=============================================================
+export interface IErrorMessagePorps {
+    errorText: string,
+    isVisible : boolean,
+    callback : any
+}
 
 
 

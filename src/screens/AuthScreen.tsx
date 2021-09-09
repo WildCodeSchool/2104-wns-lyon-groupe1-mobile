@@ -5,26 +5,37 @@ import {
   Image,
   TextInput,
   StyleSheet,
+  Alert,
 } from "react-native";
 import AppLayout from "../components/Layout";
 import { AuthContext } from "../../AuthContext";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default function AuthScreen() {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
-  const {signIn} = React.useContext(AuthContext);
+  const [authErrorText, setAuthErrorText] = useState("");
+  const [isVisibleErrorMessage, setIsVisibleErrorMessage] = useState(false);
 
-
-
+  const { signIn } = React.useContext(AuthContext);
 
   const authenticate = () => {
-    signIn({emailInput, passwordInput})
+    if (emailInput === "" || passwordInput === "") {
+      setIsVisibleErrorMessage(true);
+      setAuthErrorText("Veuillez entrer un mail et un mot de passe");
+    } else {
+      signIn({ emailInput, passwordInput });
+    }
   };
-
 
   //=======================================================================
   return (
     <AppLayout>
+      <ErrorMessage
+        errorText={authErrorText}
+        isVisible={isVisibleErrorMessage}
+        callback={() => setIsVisibleErrorMessage(false)}
+      />
       <View style={stlyes.layout}>
         <Image source={require("../../assets/mainLogo.png")} />
         <TextInput
