@@ -1,6 +1,11 @@
 
 
 export const screenNames = {
+
+    root : {
+        name : "root",
+        title: "root"
+    },
     authScreen : {
         name : "authScreen",
         title : "Me connecter"
@@ -12,5 +17,9 @@ export const screenNames = {
     flashCard : {
         name : "flashCard",
         title : "Une fiche"
+    },
+    settingsScreen :  {
+        name: "settingsScreen",
+        title : "Paramètres"  
     }
 }

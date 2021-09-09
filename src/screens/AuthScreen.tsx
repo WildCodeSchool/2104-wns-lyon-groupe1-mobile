@@ -8,8 +8,10 @@ import {
   StyleSheet,
 } from "react-native";
 import AppLayout from "../components/Layout";
+import { screenNames } from "../utils/screenNames";
 
-export default function AuthPage() {
+
+export default function AuthScreen() {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
 
@@ -17,9 +19,11 @@ export default function AuthPage() {
   const navigation = useNavigation<any>();
 
   const authenticate = () => {
-    navigation.navigate("listFlashCards");
+    navigation.navigate(screenNames.root.name);
   };
 
+
+  //=======================================================================
   return (
     <AppLayout>
       <View style={stlyes.layout}>
