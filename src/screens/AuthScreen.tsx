@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 import {
   Button,
   View,
@@ -8,18 +7,18 @@ import {
   StyleSheet,
 } from "react-native";
 import AppLayout from "../components/Layout";
-import { screenNames } from "../utils/screenNames";
-
+import { AuthContext } from "../../AuthContext";
 
 export default function AuthScreen() {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
+  const {signIn} = React.useContext(AuthContext);
 
-  //TODO correct this by adding the type instead of any
-  const navigation = useNavigation<any>();
+
+
 
   const authenticate = () => {
-    navigation.navigate(screenNames.root.name);
+    signIn({emailInput, passwordInput})
   };
 
 
