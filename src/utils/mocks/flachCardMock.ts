@@ -5,7 +5,7 @@ export const flashCardMock =
 {
     _id: "111111111111111111111111111111",
     title: "title 1",
-    tag: ["tag 1-1", "tag 1-2", "tag 1-3","tag 1-1", "tag 1-2", "tag 1-3","tag 1-1", "tag 1-2", "tag 1-3"],
+    tag: ["tag 1", "tag 2", "tag 3","tag 4", "tag 5", "tag 6"],
     subtitle: [
         {
             title: "définition 1 - 1",
@@ -78,7 +78,7 @@ export const flashCardMock =
     {
         _id: "111111111111111111111111111111",
         title: "title 1",
-        tag: ["tag 1-1", "tag 1-2", "tag 1-3"],
+        tag: ["tag 1", "tag 1", "tag 1"],
         subtitle: [
             {
                 title: "définition 1 - 1",
@@ -109,11 +109,11 @@ export const flashCardMock =
         ],
         ressource: [
             {
-                name: "interesting 1-1",
+                name: "interesting 1",
                 url: "url 1 - 1"
             },
             {
-                name: "interesting 1-2",
+                name: "interesting 1",
                 url: "url 1 - 2"
             }
         ]
@@ -121,7 +121,7 @@ export const flashCardMock =
     {
         _id: "222222222222222222222222222222222",
         title: "title 2",
-        tag: ["tag 2-1", "tag 1-2", "tag 2-3"],
+        tag: ["tag 2", "tag 1", "tag 2"],
         subtitle: [
             {
                 title: "définition 2",
@@ -152,11 +152,11 @@ export const flashCardMock =
         ],
         ressource: [
             {
-                name: "interesting 2-1",
+                name: "interesting 2",
                 url: "url 2 - 1"
             },
             {
-                name: "interesting 1-2",
+                name: "interesting 1",
                 url: "url 2 - 2"
             }
         ]
@@ -164,7 +164,7 @@ export const flashCardMock =
     {
         _id: "333333333333333333333333333333",
         title: "title 3",
-        tag: ["tag 3-1", "tag 3-2", "tag 2-3"],
+        tag: ["tag 3", "tag 3", "tag 2"],
         subtitle: [
             {
                 title: "définition 3 - 1",
@@ -195,11 +195,11 @@ export const flashCardMock =
         ],
         ressource: [
             {
-                name: "interesting 3-1",
+                name: "interesting 3",
                 url: "url 3 - 1"
             },
             {
-                name: "interesting 1-2",
+                name: "interesting 1",
                 url: "url 3 - 2"
             }
         ]
@@ -207,7 +207,7 @@ export const flashCardMock =
     {
         _id: "111111111111111111111111111111",
         title: "title 4",
-        tag: ["tag 4-1", "tag 4-2", "tag 4-3"],
+        tag: ["tag 4", "tag 4", "tag 4"],
         subtitle: [
             {
                 title: "définition 4 - 1",
@@ -238,11 +238,11 @@ export const flashCardMock =
         ],
         ressource: [
             {
-                name: "interesting 4-1",
+                name: "interesting 4",
                 url: "url 4 - 1"
             },
             {
-                name: "interesting 1-2",
+                name: "interesting 1",
                 url: "url 4 - 2"
             }
         ]

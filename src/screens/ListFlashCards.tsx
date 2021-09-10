@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { View, StyleSheet, TextInput, Image } from "react-native";
 import { debounce, filter } from "lodash";
 import FlashCardCell from "../components/FlashCardCell";
@@ -6,33 +6,40 @@ import { ScrollView } from "react-native-gesture-handler";
 import AppLayout from "../components/Layout";
 
 import { listFlashCardsMock } from "../utils/mocks/listFlashCardsMock";
+import { useQuery } from "@apollo/client";
+import { GET_ALL_FLASH_CARDS } from "../utils/graphqlRequests";
+import { AuthContext } from "../../AuthContext";
+import { Picker } from "@react-native-picker/picker";
 //=============================================================================
 
 export default function ListFlashCards(): JSX.Element {
   const [filterText, setFilterText] = useState("");
   const [filterTextDelayed, setFilterTextDelayed] = useState("");
   const [flashCards, setFlashCards] = useState<any>([{}]);
-     useEffect(() => {
-    if(filterTextDelayed === ""){
+  const { appContext } = React.useContext(AuthContext);
+
+  useEffect(() => {
+    console.log(appContext);
+    if (filterTextDelayed === "") {
       setFlashCards(listFlashCardsMock);
     }
-    if(filterTextDelayed !== "") {
-      fetchFlashCards(listFlashCardsMock, filterTextDelayed)
+    if (filterTextDelayed !== "") {
+      fetchFlashCards(listFlashCardsMock, filterTextDelayed);
     }
   }, [filterTextDelayed]);
 
   //============================================================================
-  const fetchFlashCards = (listFlashCards : any, filterTextDelayed : string) => {
+  const fetchFlashCards = (listFlashCards: any, filterTextDelayed: string) => {
     let listFilteredFlashCards = [];
-    for(let i=0; i<listFlashCards.length;i++){
-      for(let j=0; j<listFlashCards[i].tag.length; j++){
-        if(listFlashCards[i].tag[j] === filterTextDelayed){
+    for (let i = 0; i < listFlashCards.length; i++) {
+      for (let j = 0; j < listFlashCards[i].tag.length; j++) {
+        if (listFlashCards[i].tag[j] === filterTextDelayed) {
           listFilteredFlashCards.push(listFlashCards[i]);
         }
       }
     }
     setFlashCards(listFilteredFlashCards);
-  }
+  };
   //============================================================================
 
   const debouncedFilter = useCallback(
@@ -45,9 +52,11 @@ export default function ListFlashCards(): JSX.Element {
   };
   //===============================================================================
 
+
   return (
     <AppLayout>
       <ScrollView contentContainerStyle={styles.cellsContainer}>
+        
         <View style={styles.filterContainer}>
           <TextInput
             onChangeText={(value) => handleFilterTextChange(value)}
@@ -74,6 +83,11 @@ export default function ListFlashCards(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  picker : {
+    color: "black"
+  },
+
+
   cellsContainer: {
     alignItems: "center",
   },

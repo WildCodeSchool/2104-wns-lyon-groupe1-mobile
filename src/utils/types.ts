@@ -49,6 +49,12 @@ export interface IErrorMessagePorps {
     callback : any
 }
 
+//=============================================================
+export interface ILoginData{
+    emailInput : string,
+    passwordInput : string
+}
+
 
 
 

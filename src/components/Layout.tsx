@@ -17,6 +17,7 @@ export default function AppLayout({ children }: IChildren) {
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
+    paddingTop: 10,
   },
   contentWrapper: {
     paddingHorizontal: 8,

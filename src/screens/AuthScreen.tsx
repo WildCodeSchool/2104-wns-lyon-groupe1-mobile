@@ -5,26 +5,38 @@ import {
   Image,
   TextInput,
   StyleSheet,
-  Alert,
 } from "react-native";
 import AppLayout from "../components/Layout";
 import { AuthContext } from "../../AuthContext";
 import ErrorMessage from "../components/ErrorMessage";
+import { useMutation } from "@apollo/client";
+import { LOGIN } from "../utils/graphqlRequests";
 
 export default function AuthScreen() {
+  const { signIn } = React.useContext(AuthContext);
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [authErrorText, setAuthErrorText] = useState("");
   const [isVisibleErrorMessage, setIsVisibleErrorMessage] = useState(false);
+  const [connect] = useMutation(LOGIN, {    
+    onCompleted: (value) => {
+      signIn(value.login);
+    },
+    onError: (e) => {
+      setIsVisibleErrorMessage(true);
+      setAuthErrorText("Mauvais mail ou mot de passe");
+    },
+  });
 
-  const { signIn } = React.useContext(AuthContext);
 
   const authenticate = () => {
     if (emailInput === "" || passwordInput === "") {
       setIsVisibleErrorMessage(true);
       setAuthErrorText("Veuillez entrer un mail et un mot de passe");
     } else {
-      signIn({ emailInput, passwordInput });
+      connect({
+        variables: { mail: "eleve1@aca.com", password: "eleve1" },
+      });
     }
   };
 

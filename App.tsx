@@ -1,5 +1,7 @@
 import "react-native-gesture-handler";
-import React, { Dispatch, useState } from "react";
+import React from "react";
+import { AppRegistry } from "react-native";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import FlashCard from "./src/screens/Flashcard";
 import ListFlashCards from "./src/screens/ListFlashCards";
 import { screenNames } from "./src/utils/screenNames";
@@ -13,6 +15,15 @@ import SettingsScreen from "./src/screens/SettingsScreen";
 
 const Stack = createNativeStackNavigator<ParamListBase>();
 const Drawer = createDrawerNavigator();
+
+//cache
+//==========================================================
+const cache = new InMemoryCache()
+const client = new ApolloClient({
+  uri: "http://192.168.1.98:5000/graphql",
+  cache: new InMemoryCache(),
+});
+//==========================================================
 
 const MainStackNavigator = () => {
   return (
@@ -57,7 +68,7 @@ const AppDrawer = () => {
   );
 };
 
-//==================================================================================
+//=========================================
 
 export default function App() {
   const [state, dispatch] = React.useReducer(
@@ -67,6 +78,7 @@ export default function App() {
           return {
             ...prevState,
             userToken: action.token,
+            classrooms : action.classroom,
             isLoading: false,
           };
         case "SIGN_IN":
@@ -74,6 +86,7 @@ export default function App() {
             ...prevState,
             isSignout: false,
             userToken: action.token,
+            classrooms : action.classroom
           };
         case "SIGN_OUT":
           return {
@@ -87,6 +100,7 @@ export default function App() {
       isLoading: true,
       isSignout: false,
       userToken: null,
+      classrooms:  Array,
     }
   );
 
@@ -97,7 +111,7 @@ export default function App() {
       try {
         userToken = await SecureStore.getItemAsync("userToken");
       } catch (e) {
-        // Restoring token failed
+        console.log(e);
       }
       dispatch({ type: "RESTORE_TOKEN", token: userToken });
     };
@@ -110,7 +124,7 @@ export default function App() {
   const authContext = React.useMemo(
     () => ({
       signIn: async (data: any) => {
-        dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
+        dispatch({ type: "SIGN_IN", data});
       },
       signOut: () => dispatch({ type: "SIGN_OUT" }),
     }),
@@ -118,24 +132,27 @@ export default function App() {
   );
 
   return (
-    <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {state.userToken === null ? (
-            <Stack.Screen
-              name={screenNames.authScreen.name}
-              component={AuthScreen}
-              options={{ title: screenNames.authScreen.title }}
-            />
-          ) : (
-            <Stack.Screen
-              name={screenNames.root.name}
-              component={AppDrawer}
-              options={{ title: screenNames.root.title }}
-            />
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AuthContext.Provider>
+    <ApolloProvider client={client}>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {state.userToken === null ? (
+              <Stack.Screen
+                name={screenNames.authScreen.name}
+                component={AuthScreen}
+                options={{ title: screenNames.authScreen.title }}
+              />
+            ) : (
+              <Stack.Screen
+                name={screenNames.root.name}
+                component={AppDrawer}
+                options={{ title: screenNames.root.title }}
+              />
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </ApolloProvider>
   );
 }
+AppRegistry.registerComponent("MyApplication", () => App);
