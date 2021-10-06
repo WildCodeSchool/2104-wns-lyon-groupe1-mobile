@@ -2,12 +2,16 @@
 export type FlashCardCellProps = {
     flashCard_id : string
     flashCardTitle : string,
+    flashCardTags : string[],
+    flashCardRessources : Ressource[]
+    subtitles: Subtitle[]
 }
 
 //=============================================================
 export type Paragraph = {
     text : string
 }
+
 
 export type Subtitle = {
     title : string,
@@ -17,7 +21,6 @@ export type Subtitle = {
 
 export type Ressource  = {
     name : string,
-    url : string,
 }
 
 export interface iFlashCard {

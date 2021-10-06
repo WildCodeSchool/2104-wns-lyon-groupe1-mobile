@@ -23,11 +23,20 @@ export const LOGIN = gql`
 
 export const GET_ALL_FLASH_CARDS = gql`
 query GetFlashCards ($classroomId: String!){
-  getAllFlashcards(classroomId : $classroomId)
-  {
+  getAllFlashcards(classroomId : $classroomId){
     title,
-     tag,
-      id
+    tag,
+    id,
+    subtitle{
+      title,
+      position,
+      paragraph{
+        text
+      }
+    },
+    ressource{
+      name
     }
   }
+}
 `
