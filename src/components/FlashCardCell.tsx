@@ -7,10 +7,13 @@ import { screenNames } from "../utils/screenNames";
 export default function FlashCardCell({
   flashCardTitle,
   flashCard_id,
+  flashCardTags,
+  subtitles,
+  flashCardRessources
 }: FlashCardCellProps) {
   const navigation = useNavigation<any>();
   const navigateToFlashCard = () => {
-    navigation.navigate(screenNames.flashCard.name, { flashCard_id, flashCardTitle });
+    navigation.navigate(screenNames.flashCard.name, { flashCard_id, flashCardTitle, flashCardTags, flashCardRessources, subtitles });
   };
 
   return (
