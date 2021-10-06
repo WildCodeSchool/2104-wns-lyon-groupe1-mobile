@@ -1,18 +1,8 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Linking,
-} from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Linking } from "react-native";
 import { iRessourceSectionProps, Ressource } from "../utils/types";
 
-export default function RessourcesSection({
-  ressources,
-}: iRessourceSectionProps) {
+export default function RessourcesSection({ ressources }: iRessourceSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const openUrl = (url: string) => {
@@ -22,22 +12,18 @@ export default function RessourcesSection({
   //=================================================================================
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => setIsOpen(!isOpen)}
-        style={styles.titleContainer}
-      >
+      <TouchableOpacity onPress={() => setIsOpen(!isOpen)} style={styles.titleContainer}>
         <Text style={styles.title}>Ressources</Text>
         <Image
           source={
-            isOpen
-              ? require("../../assets/subtitleArrowOpen.png")
-              : require("../../assets/subtitleArrowClosed.png")
+            isOpen ? require("../../assets/subtitleArrowOpen.png") : require("../../assets/subtitleArrowClosed.png")
           }
         />
       </TouchableOpacity>
 
       {isOpen && (
-        <View style={styles.ressourcesContainer}>
+        //JE GARDE CA AUSSI DANS LE CAS Où ON A DES URL DANS LES RESSOURCE COMME PREVU LES US
+        /*         <View style={styles.ressourcesContainer}>
           {ressources.map((ressources: Ressource, i) => {
             return (
               <TouchableOpacity
@@ -48,6 +34,16 @@ export default function RessourcesSection({
                 <View style={styles.circle}></View>
                 <Text style={styles.ressourceText}>{ressources.name}</Text>
               </TouchableOpacity>
+            );
+          })}
+        </View> */
+        <View style={styles.ressourcesContainer}>
+          {ressources.map((ressources: Ressource, i) => {
+            return (
+              <View key={i} style={styles.singleRessource}>
+                <View style={styles.circle}></View>
+                <Text style={styles.ressourceText}>{ressources.name}</Text>
+              </View>
             );
           })}
         </View>
@@ -81,15 +77,14 @@ const styles = StyleSheet.create({
   },
   singleRessource: {
     marginBottom: 10,
-    flexDirection : "row",
-    alignItems : "flex-start",
-    position : "relative",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    position: "relative",
   },
 
-
-  ressourceText : {
+  ressourceText: {
     color: "blue",
-    paddingLeft : 14,
+    paddingLeft: 14,
   },
 
   circle: {
