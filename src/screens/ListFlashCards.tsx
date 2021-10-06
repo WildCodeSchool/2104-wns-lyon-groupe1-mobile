@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
-import { View, StyleSheet, TextInput, Image } from "react-native";
-import { debounce, filter } from "lodash";
+import React, { useEffect, useState, useCallback, useContext } from "react";
+import { View, StyleSheet, TextInput, Image, Alert } from "react-native";
+import { debounce } from "lodash";
 import FlashCardCell from "../components/FlashCardCell";
 import { ScrollView } from "react-native-gesture-handler";
 import AppLayout from "../components/Layout";
@@ -8,28 +8,38 @@ import AppLayout from "../components/Layout";
 import { listFlashCardsMock } from "../utils/mocks/listFlashCardsMock";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_FLASH_CARDS } from "../utils/graphqlRequests";
-import { AuthContext } from "../../AuthContext";
-import { Picker } from "@react-native-picker/picker";
+import { ClassroomContext } from "../../ClassroomContext";
 //=============================================================================
 
 export default function ListFlashCards(): JSX.Element {
   const [filterText, setFilterText] = useState("");
   const [filterTextDelayed, setFilterTextDelayed] = useState("");
   const [flashCards, setFlashCards] = useState<any>([{}]);
-  const { appContext } = React.useContext(AuthContext);
+  const { classroomId } = useContext(ClassroomContext);
+  const {data} = useQuery(GET_ALL_FLASH_CARDS, {variables : {classroomId : classroomId}});
+
+  console.log("===================");
+  console.log(data);
+  console.log("===================");
+
+
 
   useEffect(() => {
-    console.log(appContext);
     if (filterTextDelayed === "") {
-      setFlashCards(listFlashCardsMock);
+      fetchFlashCards(classroomId);
     }
     if (filterTextDelayed !== "") {
-      fetchFlashCards(listFlashCardsMock, filterTextDelayed);
+      filterFlashCards(listFlashCardsMock, filterTextDelayed);
     }
   }, [filterTextDelayed]);
 
   //============================================================================
-  const fetchFlashCards = (listFlashCards: any, filterTextDelayed: string) => {
+  const fetchFlashCards = (classroomId:string) => {
+    setFlashCards(listFlashCardsMock);
+  };
+
+  //============================================================================
+  const filterFlashCards = (listFlashCards: any, filterTextDelayed: string) => {
     let listFilteredFlashCards = [];
     for (let i = 0; i < listFlashCards.length; i++) {
       for (let j = 0; j < listFlashCards[i].tag.length; j++) {
@@ -52,11 +62,9 @@ export default function ListFlashCards(): JSX.Element {
   };
   //===============================================================================
 
-
   return (
     <AppLayout>
       <ScrollView contentContainerStyle={styles.cellsContainer}>
-        
         <View style={styles.filterContainer}>
           <TextInput
             onChangeText={(value) => handleFilterTextChange(value)}
@@ -68,14 +76,8 @@ export default function ListFlashCards(): JSX.Element {
           <Image source={require("../../assets/filterLoop.png")} />
         </View>
 
-        {flashCards.map((flashCard: any, key: number) => {
-          return (
-            <FlashCardCell
-              key={key}
-              flashCardTitle={flashCard.title}
-              flashCard_id={flashCard._id}
-            />
-          );
+        {data.getAllFlashcards.map((flashCard: any, key: number) => {
+          return <FlashCardCell key={key} flashCardTitle={flashCard.title} flashCard_id={flashCard._id} />;
         })}
       </ScrollView>
     </AppLayout>
@@ -83,10 +85,9 @@ export default function ListFlashCards(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  picker : {
-    color: "black"
+  picker: {
+    color: "black",
   },
-
 
   cellsContainer: {
     alignItems: "center",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   View,
@@ -11,15 +11,19 @@ import { AuthContext } from "../../AuthContext";
 import ErrorMessage from "../components/ErrorMessage";
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "../utils/graphqlRequests";
+import { ClassroomContext } from "../../ClassroomContext";
 
 export default function AuthScreen() {
   const { signIn } = React.useContext(AuthContext);
-  const [emailInput, setEmailInput] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
-  const [authErrorText, setAuthErrorText] = useState("");
-  const [isVisibleErrorMessage, setIsVisibleErrorMessage] = useState(false);
+  const {setClassroomId} = useContext(ClassroomContext);
+
+  const [emailInput, setEmailInput] = useState<string>("eleve8@aca.com");
+  const [passwordInput, setPasswordInput] = useState<string>("eleve8");
+  const [authErrorText, setAuthErrorText] = useState<string>("");
+  const [isVisibleErrorMessage, setIsVisibleErrorMessage] = useState<boolean>(false);
   const [connect] = useMutation(LOGIN, {    
     onCompleted: (value) => {
+      setClassroomId(value.login.classroom[0].classroomId);
       signIn(value.login);
     },
     onError: (e) => {
@@ -28,14 +32,13 @@ export default function AuthScreen() {
     },
   });
 
-
   const authenticate = () => {
     if (emailInput === "" || passwordInput === "") {
       setIsVisibleErrorMessage(true);
       setAuthErrorText("Veuillez entrer un mail et un mot de passe");
     } else {
       connect({
-        variables: { mail: "eleve1@aca.com", password: "eleve1" },
+        variables: { mail: emailInput, password: passwordInput },
       });
     }
   };

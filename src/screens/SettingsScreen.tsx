@@ -3,11 +3,11 @@ import { Button, View, Image, TextInput, StyleSheet,Alert } from "react-native";
 import AppLayout from "../components/Layout";
 import { screenNames } from "../utils/screenNames";
 import { AuthContext } from "../../AuthContext";
+import { ClassroomContext } from "../../ClassroomContext";
 
 
 export default function SettingsScreen() {
     const {signOut} = React.useContext(AuthContext);
-
 
 
   const signoutUser = () => {

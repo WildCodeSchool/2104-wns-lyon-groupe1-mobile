@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useState } from "react";
 import { AppRegistry } from "react-native";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import FlashCard from "./src/screens/Flashcard";
@@ -9,6 +9,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer, ParamListBase } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthContext } from "./AuthContext";
+import { ClassroomContext } from "./ClassroomContext";
 import * as SecureStore from "expo-secure-store";
 import AuthScreen from "./src/screens/AuthScreen";
 import SettingsScreen from "./src/screens/SettingsScreen";
@@ -18,7 +19,6 @@ const Drawer = createDrawerNavigator();
 
 //cache
 //==========================================================
-const cache = new InMemoryCache()
 const client = new ApolloClient({
   uri: "http://192.168.1.98:5000/graphql",
   cache: new InMemoryCache(),
@@ -71,6 +71,8 @@ const AppDrawer = () => {
 //=========================================
 
 export default function App() {
+  const [classroomId, setClassroomId] = useState<any>("");
+
   const [state, dispatch] = React.useReducer(
     (prevState: any, action: any) => {
       switch (action.type) {
@@ -78,7 +80,6 @@ export default function App() {
           return {
             ...prevState,
             userToken: action.token,
-            classrooms : action.classroom,
             isLoading: false,
           };
         case "SIGN_IN":
@@ -86,7 +87,6 @@ export default function App() {
             ...prevState,
             isSignout: false,
             userToken: action.token,
-            classrooms : action.classroom
           };
         case "SIGN_OUT":
           return {
@@ -100,7 +100,6 @@ export default function App() {
       isLoading: true,
       isSignout: false,
       userToken: null,
-      classrooms:  Array,
     }
   );
 
@@ -120,37 +119,45 @@ export default function App() {
     console.log(state.useToken);
   }, []);
 
-  //============================
+  //===========================
+
+
+
   const authContext = React.useMemo(
     () => ({
       signIn: async (data: any) => {
-        dispatch({ type: "SIGN_IN", data});
+        dispatch({ type: "SIGN_IN", data });
       },
       signOut: () => dispatch({ type: "SIGN_OUT" }),
     }),
     []
   );
 
+
+
+
   return (
     <ApolloProvider client={client}>
       <AuthContext.Provider value={authContext}>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {state.userToken === null ? (
-              <Stack.Screen
-                name={screenNames.authScreen.name}
-                component={AuthScreen}
-                options={{ title: screenNames.authScreen.title }}
-              />
-            ) : (
-              <Stack.Screen
-                name={screenNames.root.name}
-                component={AppDrawer}
-                options={{ title: screenNames.root.title }}
-              />
-            )}
-          </Stack.Navigator>
-        </NavigationContainer>
+        <ClassroomContext.Provider value={{classroomId, setClassroomId}}>
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              {state.userToken === null ? (
+                <Stack.Screen
+                  name={screenNames.authScreen.name}
+                  component={AuthScreen}
+                  options={{ title: screenNames.authScreen.title }}
+                />
+              ) : (
+                <Stack.Screen
+                  name={screenNames.root.name}
+                  component={AppDrawer}
+                  options={{ title: screenNames.root.title }}
+                />
+              )}
+            </Stack.Navigator>
+          </NavigationContainer>
+        </ClassroomContext.Provider>
       </AuthContext.Provider>
     </ApolloProvider>
   );
