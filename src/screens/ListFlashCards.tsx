@@ -4,8 +4,6 @@ import { debounce } from "lodash";
 import FlashCardCell from "../components/FlashCardCell";
 import { ScrollView } from "react-native-gesture-handler";
 import AppLayout from "../components/Layout";
-
-import { listFlashCardsMock } from "../utils/mocks/listFlashCardsMock";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_FLASH_CARDS } from "../utils/graphqlRequests";
 import { ClassroomContext } from "../../ClassroomContext";
@@ -16,27 +14,16 @@ export default function ListFlashCards(): JSX.Element {
   const [filterTextDelayed, setFilterTextDelayed] = useState("");
   const [flashCards, setFlashCards] = useState<any>([{}]);
   const { classroomId } = useContext(ClassroomContext);
-  const {data} = useQuery(GET_ALL_FLASH_CARDS, {variables : {classroomId : classroomId}});
-
-  console.log("===================");
-  console.log(data);
-  console.log("===================");
-
-
+  const { data } = useQuery(GET_ALL_FLASH_CARDS, { variables: { classroomId: classroomId } });
 
   useEffect(() => {
     if (filterTextDelayed === "") {
-      fetchFlashCards(classroomId);
+      setFlashCards(data.getAllFlashcards);
     }
     if (filterTextDelayed !== "") {
-      filterFlashCards(listFlashCardsMock, filterTextDelayed);
+      filterFlashCards(flashCards, filterTextDelayed);
     }
   }, [filterTextDelayed]);
-
-  //============================================================================
-  const fetchFlashCards = (classroomId:string) => {
-    setFlashCards(listFlashCardsMock);
-  };
 
   //============================================================================
   const filterFlashCards = (listFlashCards: any, filterTextDelayed: string) => {
@@ -76,8 +63,17 @@ export default function ListFlashCards(): JSX.Element {
           <Image source={require("../../assets/filterLoop.png")} />
         </View>
 
-        {data.getAllFlashcards.map((flashCard: any, key: number) => {
-          return <FlashCardCell key={key} flashCardTitle={flashCard.title} flashCard_id={flashCard._id} />;
+        {flashCards.map((flashCard: any, key: number) => {
+          return (
+            <FlashCardCell
+              key={key}
+              flashCardTitle={flashCard.title}
+              flashCard_id={flashCard.id}
+              flashCardTags={flashCard.tag}
+              flashCardRessources={flashCard.ressource}
+              subtitles={flashCard.subtitle}
+            />
+          );
         })}
       </ScrollView>
     </AppLayout>
@@ -85,10 +81,6 @@ export default function ListFlashCards(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  picker: {
-    color: "black",
-  },
-
   cellsContainer: {
     alignItems: "center",
   },
