@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useEffect, useState, useCallback, useContext, useMemo } from "react";
 import { View, StyleSheet, TextInput, Image, Alert } from "react-native";
 import { debounce } from "lodash";
 import FlashCardCell from "../components/FlashCardCell";
@@ -9,19 +9,32 @@ import { GET_ALL_FLASH_CARDS } from "../utils/graphqlRequests";
 import { ClassroomContext } from "../../ClassroomContext";
 //=============================================================================
 
+
 export default function ListFlashCards(): JSX.Element {
   const [filterText, setFilterText] = useState("");
   const [filterTextDelayed, setFilterTextDelayed] = useState("");
-  const [flashCards, setFlashCards] = useState<any>([{}]);
+  const [flashCards, setFlashCards] = useState<any>([]);
   const { classroomId } = useContext(ClassroomContext);
   const { data } = useQuery(GET_ALL_FLASH_CARDS, { variables: { classroomId: classroomId } });
 
-  useEffect(() => {
-    if (filterTextDelayed === "") {
+
+  //MERCI DE GARDER USE MEMO ICI
+  //https://github.com/trojanowski/react-apollo-hooks/issues/133
+  //https://github.com/trojanowski/react-apollo-hooks/issues/158
+  useMemo(() => {
+    if (data) {
       setFlashCards(data.getAllFlashcards);
     }
-    if (filterTextDelayed !== "") {
-      filterFlashCards(flashCards, filterTextDelayed);
+  }, [data]);
+
+  useEffect(() => {
+    if(data){
+      if (filterTextDelayed === "") {
+        setFlashCards(data.getAllFlashcards);
+      }
+      if (filterTextDelayed !== "") {
+        filterFlashCards(flashCards, filterTextDelayed);
+      }
     }
   }, [filterTextDelayed]);
 
@@ -63,6 +76,7 @@ export default function ListFlashCards(): JSX.Element {
           <Image source={require("../../assets/filterLoop.png")} />
         </View>
 
+        {/* {data?.getAllFlashcards.map((flashCard: any, key: number) => { */}
         {flashCards.map((flashCard: any, key: number) => {
           return (
             <FlashCardCell
