@@ -35,7 +35,8 @@ query GetFlashCards ($classroomId: String!){
       }
     },
     ressource{
-      name
+      name,
+      url
     }
   }
 }
