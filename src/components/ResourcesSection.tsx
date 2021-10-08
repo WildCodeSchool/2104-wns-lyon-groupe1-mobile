@@ -23,21 +23,17 @@ export default function RessourcesSection({ ressources }: iRessourceSectionProps
 
       {isOpen && (
         //JE GARDE CA AUSSI DANS LE CAS Où ON A DES URL DANS LES RESSOURCE COMME PREVU LES US
-        /*         <View style={styles.ressourcesContainer}>
+        <View style={styles.ressourcesContainer}>
           {ressources.map((ressources: Ressource, i) => {
             return (
-              <TouchableOpacity
-                key={i}
-                onPress={() => openUrl(ressources.url)}
-                style={styles.singleRessource}
-              >
+              <TouchableOpacity key={i} onPress={() => openUrl(ressources.url)} style={styles.singleRessource}>
                 <View style={styles.circle}></View>
                 <Text style={styles.ressourceText}>{ressources.name}</Text>
               </TouchableOpacity>
             );
           })}
-        </View> */
-        <View style={styles.ressourcesContainer}>
+        </View>
+        /*         <View style={styles.ressourcesContainer}>
           {ressources.map((ressources: Ressource, i) => {
             return (
               <View key={i} style={styles.singleRessource}>
@@ -46,7 +42,7 @@ export default function RessourcesSection({ ressources }: iRessourceSectionProps
               </View>
             );
           })}
-        </View>
+        </View> */
       )}
     </View>
   );

@@ -21,6 +21,7 @@ export type Subtitle = {
 
 export type Ressource  = {
     name : string,
+    url : string
 }
 
 export interface iFlashCard {
